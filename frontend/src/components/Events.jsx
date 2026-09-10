@@ -30,7 +30,7 @@ export const Events = () => (
               <ArrowRight size={15} className="transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
             <Link
-              to="/pesan"
+              to="/pesan?mode=acara"
               data-testid="events-cta-order"
               className="group inline-flex items-center gap-2 px-6 py-3 bg-sambal text-bone text-sm font-semibold hover:bg-ink transition-colors duration-300"
             >

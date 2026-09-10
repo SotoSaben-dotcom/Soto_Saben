@@ -46,7 +46,7 @@ const BranchBlock = ({ branch, flip }) => (
         <FadeUp delay={0.2} className="mt-8 flex flex-wrap items-center gap-3">
           {branch.reservasi && (
             <Link
-              to="/pesan"
+              to="/pesan?mode=reservasi"
               data-testid={`branch-${branch.id}-reservasi`}
               className="group inline-flex items-center gap-2 px-6 py-3 bg-ink text-bone text-sm font-semibold hover:bg-sambal transition-colors duration-300"
             >

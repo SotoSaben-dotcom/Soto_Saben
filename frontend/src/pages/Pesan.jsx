@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { toast } from "sonner";
 import { Navbar } from "../components/Navbar";
@@ -26,6 +27,10 @@ const inputCls =
 const formatRp = (n) => `Rp ${n.toLocaleString("id-ID")}`;
 
 export default function Pesan() {
+  const [params, setParams] = useSearchParams();
+  const isAcara = params.get("mode") === "acara";
+  const minTotal = isAcara ? 50 : 10;
+
   const [form, setForm] = useState({
     nama: "",
     telepon: "",
@@ -34,6 +39,17 @@ export default function Pesan() {
     lokasi: "Cabang Berbah — Warung Soto Saben",
     catatan: "",
   });
+
+  useEffect(() => {
+    setForm((f) => ({
+      ...f,
+      lokasi: isAcara
+        ? f.lokasi.startsWith("Cabang Berbah")
+          ? ""
+          : f.lokasi
+        : "Cabang Berbah — Warung Soto Saben",
+    }));
+  }, [isAcara]);
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
@@ -78,29 +94,51 @@ export default function Pesan() {
 
   const submit = (e) => {
     e.preventDefault();
-    if (!form.nama.trim() || !form.tanggal) {
-      toast.error("Mohon lengkapi nama dan tanggal acara.");
+    if (!form.nama.trim() || !form.tanggal || (isAcara && !form.lokasi.trim())) {
+      toast.error(
+        isAcara
+          ? "Mohon lengkapi nama, tanggal, dan lokasi acara."
+          : "Mohon lengkapi nama dan tanggal acara."
+      );
       return;
     }
     if (Object.keys(form.menus).length === 0) {
       toast.error("Pilih minimal satu menu.");
       return;
     }
-    if (totalQty < 10) {
-      toast.error("Reservasi minimal 10 porsi secara keseluruhan.");
+    if (totalQty < minTotal) {
+      toast.error(
+        isAcara
+          ? "Pesanan acara minimal 50 porsi secara keseluruhan."
+          : "Reservasi minimal 10 porsi secara keseluruhan."
+      );
       return;
     }
-    const pesan = [
-      `Halo Warung Soto Saben, saya ${form.nama.trim()}.`,
-      "Saya ingin reservasi tempat di Cabang Berbah:",
-      `- Tanggal acara: ${form.tanggal}`,
-      `- Menu: ${Object.entries(form.menus).map(([n, q]) => `${n} x${q}`).join(", ")}`,
-      `- Total: ${totalQty} porsi/pcs`,
-      `- Lokasi acara: ${form.lokasi.trim()}`,
-      form.telepon.trim() ? `- No. HP saya: ${form.telepon.trim()}` : null,
-      form.catatan.trim() ? `- Catatan: ${form.catatan.trim()}` : null,
-      "Mohon info ketersediaan, harga, dan sound system bila diperlukan. Terima kasih.",
-    ]
+    const menuLine = Object.entries(form.menus).map(([n, q]) => `${n} x${q}`).join(", ");
+    const pesan = (isAcara
+      ? [
+          `Halo Warung Soto Saben, saya ${form.nama.trim()}.`,
+          "Saya ingin memesan soto untuk acara:",
+          `- Tanggal acara: ${form.tanggal}`,
+          `- Menu: ${menuLine}`,
+          `- Total: ${totalQty} porsi/pcs`,
+          `- Lokasi acara: ${form.lokasi.trim()}`,
+          form.telepon.trim() ? `- No. HP saya: ${form.telepon.trim()}` : null,
+          form.catatan.trim() ? `- Catatan: ${form.catatan.trim()}` : null,
+          "Mohon info ketersediaan, harga, serta layanan antar dan racik di lokasi. Terima kasih.",
+        ]
+      : [
+          `Halo Warung Soto Saben, saya ${form.nama.trim()}.`,
+          "Saya ingin reservasi tempat di Cabang Berbah:",
+          `- Tanggal acara: ${form.tanggal}`,
+          `- Menu: ${menuLine}`,
+          `- Total: ${totalQty} porsi/pcs`,
+          `- Lokasi acara: ${form.lokasi.trim()}`,
+          form.telepon.trim() ? `- No. HP saya: ${form.telepon.trim()}` : null,
+          form.catatan.trim() ? `- Catatan: ${form.catatan.trim()}` : null,
+          "Mohon info ketersediaan, harga, dan sound system bila diperlukan. Terima kasih.",
+        ]
+    )
       .filter(Boolean)
       .join("\n");
     window.open(waLink(pesan), "_blank", "noopener");
@@ -113,7 +151,9 @@ export default function Pesan() {
       <main className="pt-28 sm:pt-36 pb-20 sm:pb-28 min-h-screen">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <FadeUp>
-            <p className="text-xs font-bold tracking-[0.35em] uppercase text-emas">Pesan untuk Reservasi</p>
+            <p className="text-xs font-bold tracking-[0.35em] uppercase text-emas" data-testid="pesan-eyebrow">
+              {isAcara ? "Pesan untuk Acara" : "Pesan untuk Reservasi"}
+            </p>
           </FadeUp>
           <MaskedLines
             className="mt-4 font-serif font-medium tracking-tight leading-[1] text-5xl sm:text-7xl"
@@ -121,13 +161,33 @@ export default function Pesan() {
             delay={0.1}
           />
           <FadeUp delay={0.25}>
-            <p className="mt-6 max-w-lg text-sm sm:text-base text-kopi leading-relaxed">
-              Reservasi tempat untuk arisan, rapat, reuni, dan acara keluarga
-              lainnya — khusus di Cabang Berbah: joglo teduh di tepi sawah,
-              minimal 10 porsi. Butuh sound system untuk mendukung acara?
-              Tinggal bilang, kami sediakan. Isi formulir — pesan WhatsApp
-              tersusun otomatis, Anda tinggal kirim.
+            <p className="mt-6 max-w-lg text-sm sm:text-base text-kopi leading-relaxed" data-testid="pesan-intro">
+              {isAcara
+                ? "Hajatan, acara kantor, tirakatan, sampai makan siang gedung — minimal 50 porsi, kami siapkan, antar, dan bisa diracik langsung di lokasi acara Anda. Isi formulir — pesan WhatsApp tersusun otomatis, Anda tinggal kirim."
+                : "Reservasi tempat untuk arisan, rapat, reuni, dan acara keluarga lainnya — khusus di Cabang Berbah: joglo teduh di tepi sawah, minimal 10 porsi. Butuh sound system untuk mendukung acara? Tinggal bilang, kami sediakan. Isi formulir — pesan WhatsApp tersusun otomatis, Anda tinggal kirim."}
             </p>
+          </FadeUp>
+
+          <FadeUp delay={0.3} className="mt-10 inline-flex border border-line" data-testid="pesan-mode-tabs" role="tablist">
+            {[
+              ["reservasi", "Reservasi Tempat"],
+              ["acara", "Pesanan Acara"],
+            ].map(([m, label]) => (
+              <button
+                key={m}
+                role="tab"
+                aria-selected={(!isAcara && m === "reservasi") || (isAcara && m === "acara")}
+                data-testid={`mode-${m}`}
+                onClick={() => setParams({ mode: m })}
+                className={`px-6 py-3 text-xs sm:text-sm font-semibold tracking-wide transition-colors duration-300 ${
+                  (isAcara ? m === "acara" : m === "reservasi")
+                    ? "bg-ink text-bone"
+                    : "text-kopi hover:text-ink"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </FadeUp>
 
           <div className="mt-14 grid lg:grid-cols-12 gap-12">
@@ -192,17 +252,25 @@ export default function Pesan() {
                     ))}
                   </div>
                   <p className="mt-4 text-xs text-kopi/70 italic" data-testid="menu-min-note">
-                    Minimal reservasi 10 porsi secara keseluruhan.
+                    {isAcara
+                      ? "Pesanan acara minimal 50 porsi — kami siapkan, antar, dan racik di lokasi."
+                      : "Minimal reservasi 10 porsi secara keseluruhan."}
                   </p>
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="lokasi" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Lokasi Acara *</label>
-                  <input id="lokasi" data-testid="pesan-input-lokasi" className={`${inputCls} text-kopi cursor-not-allowed`} value={form.lokasi} readOnly aria-readonly="true" />
-                  <p className="mt-1.5 text-xs text-kopi/70 italic">Otomatis — reservasi tempat hanya di Cabang Berbah.</p>
+                  {isAcara ? (
+                    <input id="lokasi" data-testid="pesan-input-lokasi" className={inputCls} placeholder="cth. Gedung Serbaguna Kalitirto" value={form.lokasi} onChange={set("lokasi")} required />
+                  ) : (
+                    <>
+                      <input id="lokasi" data-testid="pesan-input-lokasi" className={`${inputCls} text-kopi cursor-not-allowed`} value={form.lokasi} readOnly aria-readonly="true" />
+                      <p className="mt-1.5 text-xs text-kopi/70 italic">Otomatis — reservasi tempat hanya di Cabang Berbah.</p>
+                    </>
+                  )}
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="catatan" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Catatan (opsional)</label>
-                  <textarea id="catatan" rows={3} data-testid="pesan-input-catatan" className={`${inputCls} resize-none`} placeholder="cth. Arisan 25 orang, perlu sound system, acara mulai pukul 10.00" value={form.catatan} onChange={set("catatan")} />
+                  <textarea id="catatan" rows={3} data-testid="pesan-input-catatan" className={`${inputCls} resize-none`} placeholder={isAcara ? "cth. Diracik di lokasi, tanpa perkedel, acara mulai pukul 11.00" : "cth. Arisan 25 orang, perlu sound system, acara mulai pukul 10.00"} value={form.catatan} onChange={set("catatan")} />
                 </div>
                 <div className="sm:col-span-2">
                   <button
@@ -210,7 +278,7 @@ export default function Pesan() {
                     data-testid="pesan-submit-button"
                     className="group inline-flex items-center gap-3 px-8 py-4 bg-sambal text-bone text-sm font-semibold hover:bg-ink transition-colors duration-300"
                   >
-                    Kirim Reservasi via WhatsApp
+                    {isAcara ? "Kirim Pesanan Acara via WhatsApp" : "Kirim Reservasi via WhatsApp"}
                     <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </button>
                 </div>
@@ -241,8 +309,9 @@ export default function Pesan() {
                   </div>
                 </dl>
                 <p className="mt-6 text-xs text-kopi leading-relaxed">
-                  Estimasi mengikuti harga satuan menu. Harga final dan ketersediaan
-                  sound system dikonfirmasi admin lewat WhatsApp {WA_DISPLAY}.
+                  {isAcara
+                    ? `Estimasi mengikuti harga satuan menu. Harga final beserta ongkos antar dikonfirmasi admin lewat WhatsApp ${WA_DISPLAY}.`
+                    : `Estimasi mengikuti harga satuan menu. Harga final dan ketersediaan sound system dikonfirmasi admin lewat WhatsApp ${WA_DISPLAY}.`}
                 </p>
               </aside>
             </FadeUp>

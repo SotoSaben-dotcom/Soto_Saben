@@ -85,7 +85,7 @@ export const Navbar = () => {
                   data-testid="nav-pesan-menu"
                 >
                   <Link
-                    to="/pesan"
+                    to="/pesan?mode=reservasi"
                     role="menuitem"
                     data-testid="nav-pesan-reservasi"
                     className="block px-5 py-4 border-b border-line hover:bg-ink/[0.04] transition-colors duration-300"
@@ -142,7 +142,7 @@ export const Navbar = () => {
                 </Link>
               ))}
               <Link
-                to="/pesan"
+                to="/pesan?mode=reservasi"
                 data-testid="nav-mobile-cta-reservasi"
                 className="mt-2 text-center text-sm font-semibold px-5 py-3 bg-sambal text-bone"
               >

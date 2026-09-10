@@ -21,7 +21,7 @@ Maksud: melanjutkan/membangun ulang landing page Warung Soto Saben (warung soto 
 ## Yang Sudah Diimplementasikan (10 Sep 2026)
 - Beranda: hero kinetik (masked line-by-line reveal + parallax foto + watermark "Saben"), marquee editorial lambat, bab 01 Cerita Kami, 02 Daftar Harga (menu + tombol WA per item), 03–05 Cabang (Berbah/Keputren/Trayeman dengan foto asli + fitur + Maps), 06 Jejak Acara, 07 Testimoni, 08 FAQ (accordion), footer gelap dengan 3 cabang + CTA WA.
 - Halaman /galeri: grid masonry 22 foto, filter (Semua/Acara/Cabang/Hidangan), lightbox (prev/next/Escape/backdrop).
-- Halaman /pesan: formulir reservasi tempat (khusus Cabang Berbah, arisan/rapat/reuni, min. 10 porsi, sound system tersedia) → membuka WhatsApp dengan pesan tersusun; pilihan menu lengkap (soto, minuman, lauk); ringkasan estimasi harga real-time; toast sukses/error.
+- Halaman /pesan: dua mode — `?mode=reservasi` (khusus Cabang Berbah, min. 10 porsi, sound system, lokasi terkunci) dan `?mode=acara` (katering, min. 50 porsi, lokasi bebas, antar & racik di lokasi). Isi pesan WhatsApp berbeda per mode; pilihan menu multi-pilih dengan jumlah per item; estimasi harga real-time.
 - index.html: lang="id", title & meta description Warung Soto Saben.
 - Fix bug: MaskedLines whileInView tidak terpicu karena IntersectionObserver menghitung clipping ancestor — observer dipindah ke span luar (pola variants).
 
