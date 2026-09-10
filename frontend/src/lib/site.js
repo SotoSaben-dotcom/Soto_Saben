@@ -40,6 +40,21 @@ export const MENU = [
 
 export const EXTRA_DRINKS = ["Lemon Tea", "Kopi Hitam", "Coffee Mix", "Susu"];
 
+export const LAUK = {
+  category: "Lauk & Jajanan",
+  note: "Pendamping wajib semangkuk soto — tinggal tunjuk di etalase.",
+  items: [
+    { name: "Tahu Bacem", price: "Rp 2.000" },
+    { name: "Aneka Gorengan", price: "Rp 1.000" },
+    { name: "Aneka Sate", price: "Rp 4.000" },
+    { name: "Kerupuk", price: "Rp 1.500" },
+    { name: "Paha Bawah Ayam Kampung", price: "Rp 15.000" },
+    { name: "Paha Atas Ayam Kampung", price: "Rp 25.000" },
+    { name: "Kepala Ayam Kampung", price: "Rp 15.000" },
+    { name: "Ati Ampela Ayam Kampung", price: "Rp 10.000" },
+  ],
+};
+
 export const BRANCHES = [
   {
     id: "berbah",
