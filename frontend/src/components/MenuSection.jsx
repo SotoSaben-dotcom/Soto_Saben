@@ -56,8 +56,8 @@ export const MenuSection = () => (
                   <p className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi/70 mb-3">Juga tersedia</p>
                   <div className="flex flex-wrap gap-2" data-testid="menu-extra-drinks">
                     {EXTRA_DRINKS.map((d) => (
-                      <span key={d} className="text-xs px-3 py-1.5 border border-line text-kopi">
-                        {d}
+                      <span key={d.name} className="text-xs px-3 py-1.5 border border-line text-kopi">
+                        {d.name} · {d.price}
                       </span>
                     ))}
                   </div>

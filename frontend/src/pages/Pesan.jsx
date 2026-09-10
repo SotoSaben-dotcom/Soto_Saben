@@ -14,7 +14,7 @@ const GROUPS = [
     label: "Minuman",
     options: [
       ...MENU[2].items.map((i) => ({ value: i.name, harga: toNum(i.price) })),
-      ...EXTRA_DRINKS.map((d) => ({ value: d, harga: null })),
+      ...EXTRA_DRINKS.map((d) => ({ value: d.name, harga: toNum(d.price) })),
     ],
   },
   { label: "Lauk & Jajanan", options: LAUK.items.map((i) => ({ value: i.name, harga: toNum(i.price) })) },
@@ -30,8 +30,7 @@ export default function Pesan() {
     nama: "",
     telepon: "",
     tanggal: "",
-    porsi: 10,
-    menus: ["Soto Ayam Kampung"],
+    menus: { "Soto Ayam Kampung": 10 },
     lokasi: "Cabang Berbah — Warung Soto Saben",
     catatan: "",
   });
@@ -41,51 +40,62 @@ export default function Pesan() {
   const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
   const toggleMenu = (v) =>
+    setForm((f) => {
+      const menus = { ...f.menus };
+      if (v in menus) delete menus[v];
+      else menus[v] = 10;
+      return { ...f, menus };
+    });
+
+  const setQty = (v, qty) =>
     setForm((f) => ({
       ...f,
-      menus: f.menus.includes(v) ? f.menus.filter((m) => m !== v) : [...f.menus, v],
+      menus: { ...f.menus, [v]: Math.max(1, parseInt(qty, 10) || 1) },
     }));
 
-  const hargaPerSet = useMemo(() => {
-    let total = 0;
-    let adaHarga = false;
-    for (const g of GROUPS)
-      for (const o of g.options)
-        if (form.menus.includes(o.value) && o.harga !== null) {
-          total += o.harga;
-          adaHarga = true;
-        }
-    return adaHarga ? total : null;
-  }, [form.menus]);
+  const priceMap = useMemo(() => {
+    const m = {};
+    for (const g of GROUPS) for (const o of g.options) m[o.value] = o.harga;
+    return m;
+  }, []);
+
+  const totalQty = Object.values(form.menus).reduce((a, b) => a + b, 0);
 
   const estimasi = useMemo(() => {
-    const porsi = parseInt(form.porsi, 10);
-    return hargaPerSet !== null && porsi > 0 ? hargaPerSet * porsi : null;
-  }, [hargaPerSet, form.porsi]);
+    let total = 0;
+    let ada = false;
+    for (const [name, qty] of Object.entries(form.menus)) {
+      const h = priceMap[name];
+      if (h != null) {
+        total += h * qty;
+        ada = true;
+      }
+    }
+    return ada ? total : null;
+  }, [form.menus, priceMap]);
 
   const today = new Date().toISOString().split("T")[0];
 
   const submit = (e) => {
     e.preventDefault();
-    const porsi = parseInt(form.porsi, 10);
-    if (!form.nama.trim() || !form.tanggal || !form.lokasi.trim()) {
-      toast.error("Mohon lengkapi nama, tanggal, dan lokasi acara.");
+    if (!form.nama.trim() || !form.tanggal) {
+      toast.error("Mohon lengkapi nama dan tanggal acara.");
       return;
     }
-    if (!Number.isFinite(porsi) || porsi < 10) {
-      toast.error("Reservasi tempat minimal 10 porsi.");
-      return;
-    }
-    if (form.menus.length === 0) {
+    if (Object.keys(form.menus).length === 0) {
       toast.error("Pilih minimal satu menu.");
+      return;
+    }
+    if (totalQty < 10) {
+      toast.error("Reservasi minimal 10 porsi secara keseluruhan.");
       return;
     }
     const pesan = [
       `Halo Warung Soto Saben, saya ${form.nama.trim()}.`,
       "Saya ingin reservasi tempat di Cabang Berbah:",
       `- Tanggal acara: ${form.tanggal}`,
-      `- Jumlah: ${porsi} porsi`,
-      `- Menu: ${form.menus.join(", ")}`,
+      `- Menu: ${Object.entries(form.menus).map(([n, q]) => `${n} x${q}`).join(", ")}`,
+      `- Total: ${totalQty} porsi/pcs`,
       `- Lokasi acara: ${form.lokasi.trim()}`,
       form.telepon.trim() ? `- No. HP saya: ${form.telepon.trim()}` : null,
       form.catatan.trim() ? `- Catatan: ${form.catatan.trim()}` : null,
@@ -131,17 +141,13 @@ export default function Pesan() {
                   <label htmlFor="telepon" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">No. HP (opsional)</label>
                   <input id="telepon" data-testid="pesan-input-telepon" className={inputCls} placeholder="cth. 0812 3456 7890" value={form.telepon} onChange={set("telepon")} />
                 </div>
-                <div>
+                <div className="sm:col-span-2">
                   <label htmlFor="tanggal" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Tanggal Acara *</label>
-                  <input id="tanggal" type="date" min={today} data-testid="pesan-input-tanggal" className={inputCls} value={form.tanggal} onChange={set("tanggal")} required />
-                </div>
-                <div>
-                  <label htmlFor="porsi" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Jumlah Porsi (min. 10) *</label>
-                  <input id="porsi" type="number" min={10} step={1} data-testid="pesan-input-porsi" className={inputCls} value={form.porsi} onChange={set("porsi")} required />
+                  <input id="tanggal" type="date" min={today} data-testid="pesan-input-tanggal" className={`${inputCls} sm:max-w-xs`} value={form.tanggal} onChange={set("tanggal")} required />
                 </div>
                 <div className="sm:col-span-2">
                   <p className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">
-                    Pilihan Menu * <span className="normal-case tracking-normal text-kopi/70">— pilih sesuka Anda, boleh lebih dari satu</span>
+                    Pilihan Menu * <span className="normal-case tracking-normal text-kopi/70">— pilih menu, lalu isi porsi/pcs di sampingnya</span>
                   </p>
                   <div className="mt-4 space-y-5" data-testid="pesan-menu-picker">
                     {GROUPS.map((g) => (
@@ -149,28 +155,45 @@ export default function Pesan() {
                         <p className="text-xs font-semibold text-emas tracking-widest uppercase mb-2.5">{g.label}</p>
                         <div className="flex flex-wrap gap-2">
                           {g.options.map((o) => {
-                            const active = form.menus.includes(o.value);
+                            const active = o.value in form.menus;
                             return (
-                              <button
-                                type="button"
-                                key={o.value}
-                                data-testid={`menu-pick-${slug(o.value)}`}
-                                onClick={() => toggleMenu(o.value)}
-                                aria-pressed={active}
-                                className={`px-4 py-2 text-xs sm:text-sm border transition-colors duration-300 ${
-                                  active
-                                    ? "bg-sambal text-bone border-sambal"
-                                    : "border-line text-kopi hover:border-ink hover:text-ink"
-                                }`}
-                              >
-                                {o.value}{o.harga !== null ? ` · ${formatRp(o.harga)}` : ""}
-                              </button>
+                              <span key={o.value} className="inline-flex items-center gap-2">
+                                <button
+                                  type="button"
+                                  data-testid={`menu-pick-${slug(o.value)}`}
+                                  onClick={() => toggleMenu(o.value)}
+                                  aria-pressed={active}
+                                  className={`px-4 py-2 text-xs sm:text-sm border transition-colors duration-300 ${
+                                    active
+                                      ? "bg-sambal text-bone border-sambal"
+                                      : "border-line text-kopi hover:border-ink hover:text-ink"
+                                  }`}
+                                >
+                                  {o.value}{o.harga !== null ? ` · ${formatRp(o.harga)}` : ""}
+                                </button>
+                                {active && (
+                                  <input
+                                    type="number"
+                                    min={1}
+                                    step={1}
+                                    data-testid={`menu-qty-${slug(o.value)}`}
+                                    value={form.menus[o.value]}
+                                    onChange={(e) => setQty(o.value, e.target.value)}
+                                    aria-label={`Jumlah porsi atau pcs untuk ${o.value}`}
+                                    title="Isi porsi / pcs"
+                                    className="w-20 bg-transparent border border-sambal rounded-none px-2 py-2 text-xs sm:text-sm text-center focus:outline-none focus:ring-0"
+                                  />
+                                )}
+                              </span>
                             );
                           })}
                         </div>
                       </div>
                     ))}
                   </div>
+                  <p className="mt-4 text-xs text-kopi/70 italic" data-testid="menu-min-note">
+                    Minimal reservasi 10 porsi secara keseluruhan.
+                  </p>
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="lokasi" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Lokasi Acara *</label>
@@ -201,12 +224,14 @@ export default function Pesan() {
                   <div className="flex justify-between gap-4">
                     <dt className="text-kopi shrink-0">Menu</dt>
                     <dd className="font-medium text-right" data-testid="summary-menu">
-                      {form.menus.length > 0 ? form.menus.join(", ") : "—"}
+                      {Object.keys(form.menus).length > 0
+                        ? Object.entries(form.menus).map(([n, q]) => `${n} x${q}`).join(", ")
+                        : "—"}
                     </dd>
                   </div>
                   <div className="flex justify-between gap-4">
-                    <dt className="text-kopi">Porsi</dt>
-                    <dd className="font-medium" data-testid="summary-porsi">{form.porsi || 0}</dd>
+                    <dt className="text-kopi">Total porsi/pcs</dt>
+                    <dd className="font-medium" data-testid="summary-porsi">{totalQty}</dd>
                   </div>
                   <div className="flex justify-between gap-4 pt-4 border-t border-line items-baseline">
                     <dt className="text-kopi">Estimasi kasar</dt>

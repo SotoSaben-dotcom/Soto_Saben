@@ -38,7 +38,12 @@ export const MENU = [
   },
 ];
 
-export const EXTRA_DRINKS = ["Lemon Tea", "Kopi Hitam", "Coffee Mix", "Susu"];
+export const EXTRA_DRINKS = [
+  { name: "Lemon Tea", price: "Rp 5.000" },
+  { name: "Kopi Hitam", price: "Rp 5.000" },
+  { name: "Coffee Mix", price: "Rp 5.000" },
+  { name: "Susu", price: "Rp 5.000" },
+];
 
 export const LAUK = {
   category: "Lauk & Jajanan",
