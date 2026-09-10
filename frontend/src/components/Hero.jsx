@@ -1,12 +1,22 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { MaskedLines } from "./Reveal";
 import { WA_DEFAULT } from "../lib/site";
 
 export const Hero = () => {
   const ref = useRef(null);
+  const [pesanOpen, setPesanOpen] = useState(false);
+
+  useEffect(() => {
+    if (!pesanOpen) return;
+    const close = (e) => {
+      if (!e.target.closest?.("[data-testid='hero-pesan-wrap']")) setPesanOpen(false);
+    };
+    document.addEventListener("click", close);
+    return () => document.removeEventListener("click", close);
+  }, [pesanOpen]);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "16%"]);
   const fade = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
@@ -64,14 +74,50 @@ export const Hero = () => {
           transition={{ duration: 0.9, delay: 1 }}
           className="mt-8 sm:mt-10 flex flex-wrap items-center gap-4"
         >
-          <Link
-            to="/#menu"
-            data-testid="hero-cta-menu"
-            className="group inline-flex items-center gap-2 px-7 py-3.5 border border-ink bg-bone/60 backdrop-blur-sm text-sm font-semibold hover:bg-ink hover:text-bone transition-colors duration-300"
-          >
-            Lihat Daftar Menu
-            <ArrowDown size={16} className="transition-transform duration-300 group-hover:translate-y-0.5" />
-          </Link>
+          <div className="relative" data-testid="hero-pesan-wrap">
+            <button
+              data-testid="hero-cta-pesan"
+              onClick={() => setPesanOpen((v) => !v)}
+              aria-expanded={pesanOpen}
+              aria-haspopup="menu"
+              className="group inline-flex items-center gap-2 px-7 py-3.5 border border-ink bg-bone/60 backdrop-blur-sm text-sm font-semibold hover:bg-ink hover:text-bone transition-colors duration-300"
+            >
+              Pesan Sekarang
+              <ChevronDown size={16} className={`transition-transform duration-300 ${pesanOpen ? "rotate-180" : ""}`} aria-hidden="true" />
+            </button>
+            <AnimatePresence>
+              {pesanOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute left-0 top-full mt-2 w-80 border border-line bg-bone shadow-sm z-40"
+                  role="menu"
+                  data-testid="hero-pesan-menu"
+                >
+                  <Link
+                    to="/pesan?mode=reservasi"
+                    role="menuitem"
+                    data-testid="hero-pesan-reservasi"
+                    className="block px-5 py-4 border-b border-line hover:bg-ink/[0.04] transition-colors duration-300"
+                  >
+                    <span className="block text-sm font-semibold">Reservasi Tempat</span>
+                    <span className="mt-0.5 block text-xs text-kopi leading-relaxed">Khusus Cabang Berbah — arisan, rapat, reuni, min. 10 porsi</span>
+                  </Link>
+                  <Link
+                    to="/pesan?mode=acara"
+                    role="menuitem"
+                    data-testid="hero-pesan-acara"
+                    className="block px-5 py-4 hover:bg-ink/[0.04] transition-colors duration-300"
+                  >
+                    <span className="block text-sm font-semibold">Pesanan Acara</span>
+                    <span className="mt-0.5 block text-xs text-kopi leading-relaxed">Katering hajatan & kantor — min. 50 porsi, antar & racik di lokasi</span>
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
           <a
             href={WA_DEFAULT}
             target="_blank"
