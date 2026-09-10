@@ -44,6 +44,6 @@ export const ChapterHeading = ({ number, title, className = "" }) => (
   <FadeUp className={`flex items-center gap-4 ${className}`}>
     <span className="text-xs font-bold tracking-[0.3em] text-sambal uppercase">{number}</span>
     <span className="h-px flex-1 bg-line" aria-hidden="true" />
-    <span className="text-xs font-bold tracking-[0.3em] text-kopi uppercase">{title}</span>
+    <span className="text-sm sm:text-base font-bold tracking-[0.25em] text-kopi uppercase">{title}</span>
   </FadeUp>
 );

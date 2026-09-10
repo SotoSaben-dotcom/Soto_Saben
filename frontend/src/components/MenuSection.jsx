@@ -18,8 +18,8 @@ export const MenuSection = () => (
         />
         <FadeUp delay={0.2} className="lg:col-span-4 lg:col-start-9">
           <p className="text-sm text-kopi leading-relaxed">
-            Harga bersahabat, rasa tak pernah setengah. Tekan menu apa pun untuk
-            memesan langsung lewat WhatsApp.
+            Harga bersahabat, rasa tak pernah setengah — kuah kuning keemasan
+            dimasak sejak subuh, diracik hangat begitu Anda tiba.
           </p>
         </FadeUp>
       </div>

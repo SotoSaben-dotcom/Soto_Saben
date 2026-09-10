@@ -9,7 +9,7 @@ export const Footer = () => (
       <div className="grid lg:grid-cols-12 gap-12">
         <div className="lg:col-span-6">
           <FadeUp>
-            <p className="text-xs font-bold tracking-[0.35em] uppercase text-bone/50">Warung Soto Saben</p>
+            <img src="/images/logo.png" alt="Logo Warung Soto Saben" data-testid="footer-logo" className="h-16 sm:h-20 w-auto" />
             <p className="mt-6 font-serif font-medium tracking-tight leading-[1.02] text-5xl sm:text-7xl">
               Sampai jumpa<br />di <em className="text-sambal">warung.</em>
             </p>
