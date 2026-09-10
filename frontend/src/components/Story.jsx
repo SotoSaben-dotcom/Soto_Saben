@@ -38,8 +38,8 @@ export const Story = () => {
               <p>
                 Setiap pagi bumbu diulek dengan cara tradisional, bukan digiling.
                 Kaldu ayam kampung dipadu kaldu sapi, dimasak perlahan berjam-jam
-                hingga kuning keemasan. Karena tidak ada jalan pintas untuk rasa
-                yang jujur.
+                hingga kuning keemasan — rasa manis dan asin gurih yang pas.
+                Karena tidak ada jalan pintas untuk rasa yang jujur.
               </p>
             </FadeUp>
 

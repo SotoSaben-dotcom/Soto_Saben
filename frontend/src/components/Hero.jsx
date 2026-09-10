@@ -53,8 +53,9 @@ export const Hero = () => {
           className="mt-6 sm:mt-8 max-w-md text-sm sm:text-base text-kopi leading-relaxed"
           data-testid="hero-subtext"
         >
-          Resep soto turun-temurun dari dapur keluarga kami — dimasak jujur
-          setiap pagi, disajikan hangat untuk Anda.
+          Resep soto turun-temurun dari dapur keluarga kami — dengan rasa yang
+          khas, manis dan asin gurih — dimasak jujur setiap pagi, disajikan
+          hangat untuk Anda.
         </motion.p>
 
         <motion.div
