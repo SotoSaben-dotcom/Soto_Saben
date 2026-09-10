@@ -183,7 +183,9 @@ export default function Pesan() {
           </FadeUp>
           <MaskedLines
             className="mt-4 font-serif font-medium tracking-tight leading-[1] text-5xl sm:text-7xl"
-            lines={["Tidak Usah Repot Cari", "Konsumsi Pas Acara —", <em key="b" className="text-sambal">Panggil Saja Kami.</em>]}
+            lines={isAcara
+              ? ["Tidak Usah Repot Cari", "Konsumsi Pas Acara —", <em key="b" className="text-sambal">Panggil Saja Kami.</em>]
+              : ["Mau Adain Acara", "di Cab Berbah?", <em key="b" className="text-sambal">Bisa Banget Dong — Kita Siapkan.</em>]}
             delay={0.1}
           />
           <FadeUp delay={0.25}>
