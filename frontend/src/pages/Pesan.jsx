@@ -292,7 +292,7 @@ export default function Pesan() {
                   <p className="mt-4 text-xs text-kopi/70 italic" data-testid="menu-min-note">
                     {isAcara
                       ? "Pesanan acara minimal 50 porsi — kami siapkan, antar, dan racik di lokasi. Aneka sate (ati, usus, telur puyuh) dan gorengan (mendoan, tempe garit, bakwan) — mohon sertakan pilihan Anda di catatan."
-                      : "Minimal reservasi 10 porsi secara keseluruhan."}
+                      : "Minimal reservasi 10 porsi secara keseluruhan. Aneka sate (ati, usus, telur puyuh) dan gorengan (mendoan, tempe garit, bakwan) — mohon sertakan pilihan Anda di catatan."}
                   </p>
                 </div>
                 <div className="sm:col-span-2">
