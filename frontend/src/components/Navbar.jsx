@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu as MenuIcon, X, ChevronDown } from "lucide-react";
+import { BRANCHES } from "../lib/site";
 
 const LINKS = [
   { label: "Cerita", to: "/#cerita", id: "cerita" },
@@ -13,7 +14,8 @@ const LINKS = [
 
 export const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const [pesanOpen, setPesanOpen] = useState(false);
+  const [cabangOpen, setCabangOpen] = useState(false);
+  const [cabangMobile, setCabangMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
@@ -26,17 +28,18 @@ export const Navbar = () => {
 
   useEffect(() => {
     setOpen(false);
-    setPesanOpen(false);
+    setCabangOpen(false);
+    setCabangMobile(false);
   }, [location]);
 
   useEffect(() => {
-    if (!pesanOpen) return;
+    if (!cabangOpen) return;
     const close = (e) => {
-      if (!e.target.closest?.("[data-testid='nav-pesan-wrap']")) setPesanOpen(false);
+      if (!e.target.closest?.("[data-testid='nav-cabang-wrap']")) setCabangOpen(false);
     };
     document.addEventListener("click", close);
     return () => document.removeEventListener("click", close);
-  }, [pesanOpen]);
+  }, [cabangOpen]);
 
   return (
     <header
@@ -51,61 +54,66 @@ export const Navbar = () => {
         </Link>
 
         <nav className="hidden md:flex items-center gap-8" aria-label="Navigasi utama">
-          {LINKS.map((l) => (
-            <Link
-              key={l.id}
-              to={l.to}
-              data-testid={`nav-link-${l.id}`}
-              className="group relative text-sm font-medium text-kopi hover:text-ink transition-colors duration-300"
-            >
-              {l.label}
-              <span className="absolute -bottom-1 left-0 h-px w-0 bg-sambal transition-[width] duration-300 group-hover:w-full" aria-hidden="true" />
-            </Link>
-          ))}
-          <div className="relative" data-testid="nav-pesan-wrap">
-            <button
-              data-testid="nav-cta-pesan"
-              onClick={() => setPesanOpen((v) => !v)}
-              aria-expanded={pesanOpen}
-              aria-haspopup="menu"
-              className="inline-flex items-center gap-2 text-sm font-semibold px-5 py-2.5 border border-ink bg-ink text-bone hover:bg-sambal hover:border-sambal transition-colors duration-300"
-            >
-              Pesan Sekarang
-              <ChevronDown size={15} className={`transition-transform duration-300 ${pesanOpen ? "rotate-180" : ""}`} aria-hidden="true" />
-            </button>
-            <AnimatePresence>
-              {pesanOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 8 }}
-                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute right-0 top-full mt-2 w-80 border border-line bg-bone shadow-sm z-50"
-                  role="menu"
-                  data-testid="nav-pesan-menu"
+          {LINKS.map((l) =>
+            l.id === "cabang" ? (
+              <div key="cabang" className="relative" data-testid="nav-cabang-wrap">
+                <button
+                  data-testid="nav-link-cabang"
+                  onClick={() => setCabangOpen((v) => !v)}
+                  aria-expanded={cabangOpen}
+                  aria-haspopup="menu"
+                  className="group relative inline-flex items-center gap-1.5 text-sm font-medium text-kopi hover:text-ink transition-colors duration-300"
                 >
-                  <Link
-                    to="/pesan?mode=reservasi"
-                    role="menuitem"
-                    data-testid="nav-pesan-reservasi"
-                    className="block px-5 py-4 border-b border-line hover:bg-ink/[0.04] transition-colors duration-300"
-                  >
-                    <span className="block text-sm font-semibold">Reservasi Tempat</span>
-                    <span className="mt-0.5 block text-xs text-kopi leading-relaxed">Khusus Cabang Berbah — arisan, rapat, reuni, min. 10 porsi</span>
-                  </Link>
-                  <Link
-                    to="/#menu"
-                    role="menuitem"
-                    data-testid="nav-pesan-di-tempat"
-                    className="block px-5 py-4 hover:bg-ink/[0.04] transition-colors duration-300"
-                  >
-                    <span className="block text-sm font-semibold">Pesanan di Tempat</span>
-                    <span className="mt-0.5 block text-xs text-kopi leading-relaxed">Pilih menu favorit, pesan langsung lewat WhatsApp</span>
-                  </Link>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                  {l.label}
+                  <ChevronDown size={13} className={`transition-transform duration-300 ${cabangOpen ? "rotate-180" : ""}`} aria-hidden="true" />
+                  <span className="absolute -bottom-1 left-0 h-px w-0 bg-sambal transition-[width] duration-300 group-hover:w-full" aria-hidden="true" />
+                </button>
+                <AnimatePresence>
+                  {cabangOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                      className="absolute left-1/2 -translate-x-1/2 top-full mt-3 w-64 border border-line bg-bone shadow-sm z-50"
+                      role="menu"
+                      data-testid="nav-cabang-menu"
+                    >
+                      {BRANCHES.map((b) => (
+                        <Link
+                          key={b.id}
+                          to={`/cabang/${b.id}`}
+                          role="menuitem"
+                          data-testid={`nav-cabang-${b.id}`}
+                          className="block px-5 py-3.5 border-b border-line last:border-b-0 hover:bg-ink/[0.04] transition-colors duration-300"
+                        >
+                          <span className="block text-sm font-semibold">{b.label}</span>
+                          <span className="mt-0.5 block text-xs text-kopi">{b.address}</span>
+                        </Link>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
+              <Link
+                key={l.id}
+                to={l.to}
+                data-testid={`nav-link-${l.id}`}
+                className="group relative text-sm font-medium text-kopi hover:text-ink transition-colors duration-300"
+              >
+                {l.label}
+                <span className="absolute -bottom-1 left-0 h-px w-0 bg-sambal transition-[width] duration-300 group-hover:w-full" aria-hidden="true" />
+              </Link>
+            )
+          )}
+          <Link
+            to="/pesan"
+            data-testid="nav-cta-pesan"
+            className="text-sm font-semibold px-5 py-2.5 border border-ink bg-ink text-bone hover:bg-sambal hover:border-sambal transition-colors duration-300"
+          >
+            Pesan Sekarang
+          </Link>
         </nav>
 
         <button
@@ -131,29 +139,60 @@ export const Navbar = () => {
             aria-label="Navigasi seluler"
           >
             <div className="px-5 py-6 flex flex-col gap-4">
-              {LINKS.map((l) => (
-                <Link
-                  key={l.id}
-                  to={l.to}
-                  data-testid={`nav-mobile-link-${l.id}`}
-                  className="font-serif text-2xl"
-                >
-                  {l.label}
-                </Link>
-              ))}
+              {LINKS.map((l) =>
+                l.id === "cabang" ? (
+                  <div key="cabang">
+                    <button
+                      data-testid="nav-mobile-cabang-toggle"
+                      onClick={() => setCabangMobile((v) => !v)}
+                      aria-expanded={cabangMobile}
+                      className="w-full flex items-center justify-between font-serif text-2xl"
+                    >
+                      Cabang
+                      <ChevronDown size={18} className={`transition-transform duration-300 ${cabangMobile ? "rotate-180" : ""}`} aria-hidden="true" />
+                    </button>
+                    <AnimatePresence>
+                      {cabangMobile && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <div className="pl-4 pt-3 flex flex-col gap-3 border-l border-line ml-1">
+                            {BRANCHES.map((b) => (
+                              <Link
+                                key={b.id}
+                                to={`/cabang/${b.id}`}
+                                data-testid={`nav-mobile-cabang-${b.id}`}
+                                className="text-base text-kopi"
+                              >
+                                {b.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <Link
+                    key={l.id}
+                    to={l.to}
+                    data-testid={`nav-mobile-link-${l.id}`}
+                    className="font-serif text-2xl"
+                  >
+                    {l.label}
+                  </Link>
+                )
+              )}
               <Link
-                to="/pesan?mode=reservasi"
-                data-testid="nav-mobile-cta-reservasi"
+                to="/pesan"
+                data-testid="nav-mobile-cta-pesan"
                 className="mt-2 text-center text-sm font-semibold px-5 py-3 bg-sambal text-bone"
               >
-                Reservasi Tempat (Cab. Berbah)
-              </Link>
-              <Link
-                to="/#menu"
-                data-testid="nav-mobile-cta-menu"
-                className="text-center text-sm font-semibold px-5 py-3 border border-ink"
-              >
-                Pesanan di Tempat
+                Pesan Sekarang
               </Link>
             </div>
           </motion.nav>

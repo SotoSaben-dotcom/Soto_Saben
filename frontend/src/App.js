@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import Home from "@/pages/Home";
 import Galeri from "@/pages/Galeri";
 import Pesan from "@/pages/Pesan";
+import CabangDetail from "@/pages/CabangDetail";
 
 function ScrollManager() {
   const { pathname, hash } = useLocation();
@@ -51,6 +52,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/galeri" element={<Galeri />} />
           <Route path="/pesan" element={<Pesan />} />
+          <Route path="/cabang/:id" element={<CabangDetail />} />
         </Routes>
         <Toaster position="bottom-center" />
       </BrowserRouter>
