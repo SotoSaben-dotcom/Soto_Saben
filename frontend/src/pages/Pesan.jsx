@@ -31,25 +31,37 @@ export default function Pesan() {
     telepon: "",
     tanggal: "",
     porsi: 10,
-    jenis: "Soto Ayam Kampung",
+    menus: ["Soto Ayam Kampung"],
     lokasi: "Cabang Berbah — Warung Soto Saben",
     catatan: "",
   });
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
-  const hargaAktif = useMemo(() => {
-    for (const g of GROUPS) {
-      const found = g.options.find((o) => o.value === form.jenis);
-      if (found) return found.harga;
-    }
-    return null;
-  }, [form.jenis]);
+  const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+  const toggleMenu = (v) =>
+    setForm((f) => ({
+      ...f,
+      menus: f.menus.includes(v) ? f.menus.filter((m) => m !== v) : [...f.menus, v],
+    }));
+
+  const hargaPerSet = useMemo(() => {
+    let total = 0;
+    let adaHarga = false;
+    for (const g of GROUPS)
+      for (const o of g.options)
+        if (form.menus.includes(o.value) && o.harga !== null) {
+          total += o.harga;
+          adaHarga = true;
+        }
+    return adaHarga ? total : null;
+  }, [form.menus]);
 
   const estimasi = useMemo(() => {
     const porsi = parseInt(form.porsi, 10);
-    return hargaAktif !== null && porsi > 0 ? hargaAktif * porsi : null;
-  }, [hargaAktif, form.porsi]);
+    return hargaPerSet !== null && porsi > 0 ? hargaPerSet * porsi : null;
+  }, [hargaPerSet, form.porsi]);
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -64,12 +76,16 @@ export default function Pesan() {
       toast.error("Reservasi tempat minimal 10 porsi.");
       return;
     }
+    if (form.menus.length === 0) {
+      toast.error("Pilih minimal satu menu.");
+      return;
+    }
     const pesan = [
       `Halo Warung Soto Saben, saya ${form.nama.trim()}.`,
       "Saya ingin reservasi tempat di Cabang Berbah:",
       `- Tanggal acara: ${form.tanggal}`,
       `- Jumlah: ${porsi} porsi`,
-      `- Menu: ${form.jenis}`,
+      `- Menu: ${form.menus.join(", ")}`,
       `- Lokasi acara: ${form.lokasi.trim()}`,
       form.telepon.trim() ? `- No. HP saya: ${form.telepon.trim()}` : null,
       form.catatan.trim() ? `- Catatan: ${form.catatan.trim()}` : null,
@@ -124,21 +140,37 @@ export default function Pesan() {
                   <input id="porsi" type="number" min={10} step={1} data-testid="pesan-input-porsi" className={inputCls} value={form.porsi} onChange={set("porsi")} required />
                 </div>
                 <div className="sm:col-span-2">
-                  <div className="flex items-end justify-between gap-4">
-                    <label htmlFor="jenis" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Pilihan Menu *</label>
-                    <img src="/images/logo.png" alt="Logo Soto Saben" data-testid="pesan-menu-logo" className="h-9 w-auto" />
-                  </div>
-                  <select id="jenis" data-testid="pesan-select-jenis" className={`${inputCls} cursor-pointer`} value={form.jenis} onChange={set("jenis")}>
+                  <p className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">
+                    Pilihan Menu * <span className="normal-case tracking-normal text-kopi/70">— pilih sesuka Anda, boleh lebih dari satu</span>
+                  </p>
+                  <div className="mt-4 space-y-5" data-testid="pesan-menu-picker">
                     {GROUPS.map((g) => (
-                      <optgroup key={g.label} label={g.label}>
-                        {g.options.map((o) => (
-                          <option key={o.value} value={o.value}>
-                            {o.value}{o.harga !== null ? ` — ${formatRp(o.harga)}` : ""}
-                          </option>
-                        ))}
-                      </optgroup>
+                      <div key={g.label}>
+                        <p className="text-xs font-semibold text-emas tracking-widest uppercase mb-2.5">{g.label}</p>
+                        <div className="flex flex-wrap gap-2">
+                          {g.options.map((o) => {
+                            const active = form.menus.includes(o.value);
+                            return (
+                              <button
+                                type="button"
+                                key={o.value}
+                                data-testid={`menu-pick-${slug(o.value)}`}
+                                onClick={() => toggleMenu(o.value)}
+                                aria-pressed={active}
+                                className={`px-4 py-2 text-xs sm:text-sm border transition-colors duration-300 ${
+                                  active
+                                    ? "bg-sambal text-bone border-sambal"
+                                    : "border-line text-kopi hover:border-ink hover:text-ink"
+                                }`}
+                              >
+                                {o.value}{o.harga !== null ? ` · ${formatRp(o.harga)}` : ""}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
                     ))}
-                  </select>
+                  </div>
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="lokasi" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Lokasi Acara *</label>
@@ -167,8 +199,10 @@ export default function Pesan() {
                 <p className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Ringkasan</p>
                 <dl className="mt-6 space-y-4 text-sm">
                   <div className="flex justify-between gap-4">
-                    <dt className="text-kopi">Menu</dt>
-                    <dd className="font-medium text-right" data-testid="summary-jenis">{form.jenis}</dd>
+                    <dt className="text-kopi shrink-0">Menu</dt>
+                    <dd className="font-medium text-right" data-testid="summary-menu">
+                      {form.menus.length > 0 ? form.menus.join(", ") : "—"}
+                    </dd>
                   </div>
                   <div className="flex justify-between gap-4">
                     <dt className="text-kopi">Porsi</dt>
