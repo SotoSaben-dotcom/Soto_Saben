@@ -79,8 +79,9 @@ export const MenuSection = () => (
         </div>
         <div className="lg:col-span-5 p-8 sm:p-12">
           <p className="font-serif italic text-2xl sm:text-3xl leading-snug">
-            "Bihun, kol, suwiran ayam kampung, tomat, dan perkedel — siap disiram
-            kuah kuning yang mengepul."
+            "Nasi, kol, suwiran ayam & potongan daging sapi, taoge, tomat,
+            perkedel, bihun, seledri — siap disiram kuah kuning sedikit bening
+            yang mengepul."
           </p>
         </div>
       </FadeUp>
