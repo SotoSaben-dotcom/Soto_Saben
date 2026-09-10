@@ -32,7 +32,7 @@ export default function Pesan() {
     tanggal: "",
     porsi: 10,
     jenis: "Soto Ayam Kampung",
-    lokasi: "",
+    lokasi: "Cabang Berbah — Warung Soto Saben",
     catatan: "",
   });
 
@@ -124,7 +124,10 @@ export default function Pesan() {
                   <input id="porsi" type="number" min={10} step={1} data-testid="pesan-input-porsi" className={inputCls} value={form.porsi} onChange={set("porsi")} required />
                 </div>
                 <div className="sm:col-span-2">
-                  <label htmlFor="jenis" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Pilihan Menu *</label>
+                  <div className="flex items-end justify-between gap-4">
+                    <label htmlFor="jenis" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Pilihan Menu *</label>
+                    <img src="/images/logo.png" alt="Logo Soto Saben" data-testid="pesan-menu-logo" className="h-9 w-auto" />
+                  </div>
                   <select id="jenis" data-testid="pesan-select-jenis" className={`${inputCls} cursor-pointer`} value={form.jenis} onChange={set("jenis")}>
                     {GROUPS.map((g) => (
                       <optgroup key={g.label} label={g.label}>
@@ -139,7 +142,8 @@ export default function Pesan() {
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="lokasi" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Lokasi Acara *</label>
-                  <input id="lokasi" data-testid="pesan-input-lokasi" className={inputCls} placeholder="cth. Cabang Berbah — area joglo sisi sawah" value={form.lokasi} onChange={set("lokasi")} required />
+                  <input id="lokasi" data-testid="pesan-input-lokasi" className={`${inputCls} text-kopi cursor-not-allowed`} value={form.lokasi} readOnly aria-readonly="true" />
+                  <p className="mt-1.5 text-xs text-kopi/70 italic">Otomatis — reservasi tempat hanya di Cabang Berbah.</p>
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="catatan" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Catatan (opsional)</label>
