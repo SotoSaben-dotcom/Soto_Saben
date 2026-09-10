@@ -283,7 +283,7 @@ export default function Pesan() {
                         )}
                         {isAcara && g.label === "Lauk & Jajanan" && (
                           <p className="mt-2 text-xs text-kopi/80 italic" data-testid="note-gorengan">
-                            Aneka gorengan: mendoan, tempe garit, dan bakwan.
+                            Aneka gorengan: mendoan, tempe garit, dan bakwan. Aneka sate: ati, usus, dan telur puyuh.
                           </p>
                         )}
                       </div>
@@ -308,7 +308,7 @@ export default function Pesan() {
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="catatan" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Catatan (opsional)</label>
-                  <textarea id="catatan" rows={3} data-testid="pesan-input-catatan" className={`${inputCls} resize-none`} placeholder={isAcara ? "cth. Diracik di lokasi, tanpa perkedel, acara mulai pukul 11.00" : "cth. Arisan 25 orang, perlu sound system, acara mulai pukul 10.00"} value={form.catatan} onChange={set("catatan")} />
+                  <textarea id="catatan" rows={3} data-testid="pesan-input-catatan" className={`${inputCls} resize-none`} placeholder={isAcara ? "cth. Acara mulai pukul 10.00, makan pukul 11.30 — gorengan mendoan & bakwan, sate ati & telur puyuh" : "cth. Arisan 25 orang, perlu sound system, acara mulai pukul 10.00"} value={form.catatan} onChange={set("catatan")} />
                 </div>
                 <div className="sm:col-span-2">
                   <button
