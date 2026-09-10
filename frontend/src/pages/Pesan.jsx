@@ -4,11 +4,20 @@ import { toast } from "sonner";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { FadeUp, MaskedLines } from "../components/Reveal";
-import { waLink, WA_DISPLAY } from "../lib/site";
+import { waLink, WA_DISPLAY, MENU, LAUK, EXTRA_DRINKS } from "../lib/site";
 
-const JENIS = [
-  { value: "Soto Ayam Kampung", harga: 12000 },
-  { value: "Soto Daging Sapi", harga: 14000 },
+const toNum = (p) => parseInt(p.replace(/[^0-9]/g, ""), 10);
+
+const GROUPS = [
+  { label: "Soto — per porsi", options: MENU[0].items.map((i) => ({ value: i.name, harga: toNum(i.price) })) },
+  {
+    label: "Minuman",
+    options: [
+      ...MENU[2].items.map((i) => ({ value: i.name, harga: toNum(i.price) })),
+      ...EXTRA_DRINKS.map((d) => ({ value: d, harga: null })),
+    ],
+  },
+  { label: "Lauk & Jajanan", options: LAUK.items.map((i) => ({ value: i.name, harga: toNum(i.price) })) },
 ];
 
 const inputCls =
@@ -21,19 +30,26 @@ export default function Pesan() {
     nama: "",
     telepon: "",
     tanggal: "",
-    porsi: 50,
-    jenis: JENIS[0].value,
+    porsi: 10,
+    jenis: "Soto Ayam Kampung",
     lokasi: "",
     catatan: "",
   });
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
+  const hargaAktif = useMemo(() => {
+    for (const g of GROUPS) {
+      const found = g.options.find((o) => o.value === form.jenis);
+      if (found) return found.harga;
+    }
+    return null;
+  }, [form.jenis]);
+
   const estimasi = useMemo(() => {
-    const j = JENIS.find((x) => x.value === form.jenis);
     const porsi = parseInt(form.porsi, 10);
-    return j && porsi > 0 ? j.harga * porsi : 0;
-  }, [form.jenis, form.porsi]);
+    return hargaAktif !== null && porsi > 0 ? hargaAktif * porsi : null;
+  }, [hargaAktif, form.porsi]);
 
   const today = new Date().toISOString().split("T")[0];
 
@@ -44,20 +60,20 @@ export default function Pesan() {
       toast.error("Mohon lengkapi nama, tanggal, dan lokasi acara.");
       return;
     }
-    if (!Number.isFinite(porsi) || porsi < 50) {
-      toast.error("Pesanan acara minimal 50 porsi.");
+    if (!Number.isFinite(porsi) || porsi < 10) {
+      toast.error("Reservasi tempat minimal 10 porsi.");
       return;
     }
     const pesan = [
       `Halo Warung Soto Saben, saya ${form.nama.trim()}.`,
-      "Saya ingin memesan soto untuk acara:",
+      "Saya ingin reservasi tempat di Cabang Berbah:",
       `- Tanggal acara: ${form.tanggal}`,
       `- Jumlah: ${porsi} porsi`,
-      `- Jenis: ${form.jenis}`,
+      `- Menu: ${form.jenis}`,
       `- Lokasi acara: ${form.lokasi.trim()}`,
       form.telepon.trim() ? `- No. HP saya: ${form.telepon.trim()}` : null,
       form.catatan.trim() ? `- Catatan: ${form.catatan.trim()}` : null,
-      "Mohon info ketersediaan dan harga. Terima kasih.",
+      "Mohon info ketersediaan, harga, dan sound system bila diperlukan. Terima kasih.",
     ]
       .filter(Boolean)
       .join("\n");
@@ -71,7 +87,7 @@ export default function Pesan() {
       <main className="pt-28 sm:pt-36 pb-20 sm:pb-28 min-h-screen">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <FadeUp>
-            <p className="text-xs font-bold tracking-[0.35em] uppercase text-emas">Pesan untuk Acara</p>
+            <p className="text-xs font-bold tracking-[0.35em] uppercase text-emas">Pesan untuk Reservasi</p>
           </FadeUp>
           <MaskedLines
             className="mt-4 font-serif font-medium tracking-tight leading-[1] text-5xl sm:text-7xl"
@@ -79,10 +95,12 @@ export default function Pesan() {
             delay={0.1}
           />
           <FadeUp delay={0.25}>
-            <p className="mt-6 max-w-md text-sm sm:text-base text-kopi leading-relaxed">
-              Hajatan, acara kantor, tirakatan, sampai reservasi rombongan di
-              Cabang Berbah. Isi formulir — pesan WhatsApp tersusun otomatis,
-              Anda tinggal kirim. Minimal 50 porsi.
+            <p className="mt-6 max-w-lg text-sm sm:text-base text-kopi leading-relaxed">
+              Reservasi tempat untuk arisan, rapat, reuni, dan acara keluarga
+              lainnya — khusus di Cabang Berbah: joglo teduh di tepi sawah,
+              minimal 10 porsi. Butuh sound system untuk mendukung acara?
+              Tinggal bilang, kami sediakan. Isi formulir — pesan WhatsApp
+              tersusun otomatis, Anda tinggal kirim.
             </p>
           </FadeUp>
 
@@ -102,26 +120,30 @@ export default function Pesan() {
                   <input id="tanggal" type="date" min={today} data-testid="pesan-input-tanggal" className={inputCls} value={form.tanggal} onChange={set("tanggal")} required />
                 </div>
                 <div>
-                  <label htmlFor="porsi" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Jumlah Porsi (min. 50) *</label>
-                  <input id="porsi" type="number" min={50} step={1} data-testid="pesan-input-porsi" className={inputCls} value={form.porsi} onChange={set("porsi")} required />
+                  <label htmlFor="porsi" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Jumlah Porsi (min. 10) *</label>
+                  <input id="porsi" type="number" min={10} step={1} data-testid="pesan-input-porsi" className={inputCls} value={form.porsi} onChange={set("porsi")} required />
                 </div>
-                <div>
-                  <label htmlFor="jenis" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Jenis Soto *</label>
+                <div className="sm:col-span-2">
+                  <label htmlFor="jenis" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Pilihan Menu *</label>
                   <select id="jenis" data-testid="pesan-select-jenis" className={`${inputCls} cursor-pointer`} value={form.jenis} onChange={set("jenis")}>
-                    {JENIS.map((j) => (
-                      <option key={j.value} value={j.value}>
-                        {j.value} — {formatRp(j.harga)}/porsi
-                      </option>
+                    {GROUPS.map((g) => (
+                      <optgroup key={g.label} label={g.label}>
+                        {g.options.map((o) => (
+                          <option key={o.value} value={o.value}>
+                            {o.value}{o.harga !== null ? ` — ${formatRp(o.harga)}` : ""}
+                          </option>
+                        ))}
+                      </optgroup>
                     ))}
                   </select>
                 </div>
-                <div>
+                <div className="sm:col-span-2">
                   <label htmlFor="lokasi" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Lokasi Acara *</label>
-                  <input id="lokasi" data-testid="pesan-input-lokasi" className={inputCls} placeholder="cth. Gedung Serbaguna Kalitirto" value={form.lokasi} onChange={set("lokasi")} required />
+                  <input id="lokasi" data-testid="pesan-input-lokasi" className={inputCls} placeholder="cth. Cabang Berbah — area joglo sisi sawah" value={form.lokasi} onChange={set("lokasi")} required />
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="catatan" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Catatan (opsional)</label>
-                  <textarea id="catatan" rows={3} data-testid="pesan-input-catatan" className={`${inputCls} resize-none`} placeholder="cth. Diracik di lokasi, tanpa perkedel, acara mulai pukul 11.00" value={form.catatan} onChange={set("catatan")} />
+                  <textarea id="catatan" rows={3} data-testid="pesan-input-catatan" className={`${inputCls} resize-none`} placeholder="cth. Arisan 25 orang, perlu sound system, acara mulai pukul 10.00" value={form.catatan} onChange={set("catatan")} />
                 </div>
                 <div className="sm:col-span-2">
                   <button
@@ -129,7 +151,7 @@ export default function Pesan() {
                     data-testid="pesan-submit-button"
                     className="group inline-flex items-center gap-3 px-8 py-4 bg-sambal text-bone text-sm font-semibold hover:bg-ink transition-colors duration-300"
                   >
-                    Kirim Pesanan via WhatsApp
+                    Kirim Reservasi via WhatsApp
                     <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </button>
                 </div>
@@ -141,7 +163,7 @@ export default function Pesan() {
                 <p className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Ringkasan</p>
                 <dl className="mt-6 space-y-4 text-sm">
                   <div className="flex justify-between gap-4">
-                    <dt className="text-kopi">Jenis</dt>
+                    <dt className="text-kopi">Menu</dt>
                     <dd className="font-medium text-right" data-testid="summary-jenis">{form.jenis}</dd>
                   </div>
                   <div className="flex justify-between gap-4">
@@ -150,12 +172,14 @@ export default function Pesan() {
                   </div>
                   <div className="flex justify-between gap-4 pt-4 border-t border-line items-baseline">
                     <dt className="text-kopi">Estimasi kasar</dt>
-                    <dd className="font-serif text-2xl font-semibold" data-testid="summary-estimasi">{formatRp(estimasi)}</dd>
+                    <dd className="font-serif text-2xl font-semibold" data-testid="summary-estimasi">
+                      {estimasi !== null ? formatRp(estimasi) : "—"}
+                    </dd>
                   </div>
                 </dl>
                 <p className="mt-6 text-xs text-kopi leading-relaxed">
-                  Estimasi mengikuti harga soto campur. Harga acara final
-                  dikonfirmasi admin lewat WhatsApp {WA_DISPLAY}.
+                  Estimasi mengikuti harga satuan menu. Harga final dan ketersediaan
+                  sound system dikonfirmasi admin lewat WhatsApp {WA_DISPLAY}.
                 </p>
               </aside>
             </FadeUp>
