@@ -8,6 +8,7 @@ const LINKS = [
   { label: "Cerita", to: "/#cerita", id: "cerita" },
   { label: "Menu", to: "/#menu", id: "menu" },
   { label: "Cabang", to: "/#cabang", id: "cabang" },
+  { label: "Kata Mereka", to: "/#testimoni", id: "testimoni" },
   { label: "Galeri", to: "/galeri", id: "galeri" },
 ];
 

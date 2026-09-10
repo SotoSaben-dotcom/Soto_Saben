@@ -7,6 +7,7 @@ const POINTS = [
   { icon: Flame, text: "Kaldu ayam kampung & sapi, dimasak perlahan sejak subuh" },
   { icon: HandMetal, text: "Bumbu diulek tradisional setiap pagi" },
   { icon: Drumstick, text: "Daging ayam yang fresh" },
+  { icon: Drumstick, text: "Daging sapi yang fresh" },
   { icon: Leaf, text: "Resep dijaga lintas generasi" },
 ];
 
