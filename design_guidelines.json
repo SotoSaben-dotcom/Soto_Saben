@@ -1,0 +1,160 @@
+{
+  "theme": "light",
+  "design_philosophy": "Awwwards-level Javanese heritage warung. Bold, cohesive, warm, editorial, and crafted. Premium purposeful motion without sacrificing authenticity. Minimalist editorial grids with generous whitespace and typography-led storytelling. Real photography spotlighted as art pieces with tight crops or clipped frames.",
+  "typography": {
+    "heading_font": "Cormorant Garamond",
+    "body_font": "Plus Jakarta Sans",
+    "instructions": "Use Cormorant Garamond for elegant, heritage-rich headings with tight tracking (tracking-tight) and varying weights (font-light to font-semibold). Use Plus Jakarta Sans for highly legible body copy. Headings must have a magazine-like editorial presence. For chapter numbers (e.g., '01', '02'), use small uppercase (text-sm tracking-widest font-bold)."
+  },
+  "colors": {
+    "background": "#F9F6F0",
+    "surface": "#FFFFFF",
+    "primary_text": "#2C2621",
+    "secondary_text": "#5C544D",
+    "accent_primary": "#C84B31",
+    "accent_secondary": "#A07340",
+    "border": "#E5DFD3",
+    "instructions": "Organic & Earthy archetype. The background is a warm bone/sand tone, not pure white. Text is a rich dark charcoal/roast coffee for high contrast but softer feel than pure black. Accent colors (Terracotta/Sambal Red) are used sparingly for CTAs, lines, and hover states. No heavy gradients. Textures (subtle grain) can be used lightly."
+  },
+  "visual_enhancers": {
+    "borders": "1px solid #E5DFD3 (border-border), used to create distinct editorial sections, card separations, and image framing.",
+    "shadows": "Minimal to none. Rely on borders and generous spacing to define areas. If shadow is needed, use a very subtle ambient shadow (shadow-sm).",
+    "radii": "Minimal. Images can have sharp corners (rounded-none) or very slight radius (rounded-md) depending on the editorial frame. Never use extreme pill-shapes for images.",
+    "photography": "Treat images as art. Use tight, intentional crops. Use a subtle sepia or warm filter over images if needed to match the brand tone, or present them in sharp natural color."
+  },
+  "layouts": {
+    "spacing_scale": "Use generous padding: p-12, p-16, p-24, and gap-12 to gap-24. Do not cram content.",
+    "grid_strategy": "Asymmetrical editorial grids (e.g., a 12-column grid where text spans 4 columns and an image spans 7 columns). Offset alignment creates tension and interest.",
+    "hero_section": "Kinetic hero. Huge, fluid typography ('Semangkuk Warisan Rasa.') taking up majority of viewport height. Line-by-line masked reveal animation on load.",
+    "manifesto_chapters": "Content broken into numbered chapters ('01 — Cerita Kami', '02 — Daftar Harga'). Each chapter section must have clear horizontal/vertical separation.",
+    "marquee": "One slow editorial marquee with a heritage message (e.g., 'Resep Turun-Temurun • Warung Soto Saben • Melayani Pesanan'). Elegant serif font, very slow drift."
+  },
+  "motion": {
+    "scrolling": "MANDATORY: Implement Lenis for smooth scrolling. This creates the premium momentum feel.",
+    "reveal": "Use framer-motion for kinetic reveals. Text should slide up from a hidden overflow mask. Elements should stagger fade-in on scroll (ScrollTrigger pattern).",
+    "parallax": "Subtle parallax on large images. As user scrolls, the image moves slightly inside its container.",
+    "hover": "Image zoom on hover (scale 1.05 within hidden overflow container). Buttons slightly offset or reveal an arrow."
+  },
+  "components": {
+    "buttons": "Editorial style: pure text with an underline that animates on hover, or a simple rectangular button with a 1px border. Background transparent, border charcoal, text charcoal, on hover background changes to accent.",
+    "navigation": "Minimalist header. Sticky with glassmorphism (backdrop-blur-xl bg-[#F9F6F0]/80). Minimal links. 'Pesan' CTA prominent.",
+    "lightbox": "For the '/galeri' page, use a high-quality lightbox (e.g., framer-motion AnimatePresence or a dedicated library) to view full photos.",
+    "forms": "For the '/pesan' event order page, use clean HTML forms or customized shadcn input components with minimal styling (bottom border only, no full box)."
+  },
+  "pages_structure": {
+    "home": "Hero (Kinetic) -> Marquee -> 01 Cerita Kami (Story + Images) -> 02 Daftar Harga (Menu + WhatsApp CTAs) -> 03-05 Cabang (Grid of locations with real photos) -> 06 Jejak Acara -> Footer",
+    "galeri": "Masonry or asymmetrical grid of all event photos, with lightbox functionality.",
+    "pesan": "Clean, distraction-free order form for catering/events (min 50 porsi). Generates a WhatsApp wa.me link with pre-filled message based on form inputs."
+  },
+  "image_urls": {
+    "hero_and_story": [
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/warung-asli.jpg",
+        "description": "Tampak depan Warung Soto Saben / Hero visual"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/soto-1.jpg",
+        "description": "Semangkuk soto ayam kampung hangat"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/soto-2.jpg",
+        "description": "Soto dengan kuah kuning keemasan"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/soto-asli.jpg",
+        "description": "Soto Pisah Soto Saben — bihun, suwiran ayam kampung, tomat, perkedel"
+      }
+    ],
+    "branch_berbah": [
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/berbah/depan.jpg",
+        "description": "Bangunan joglo Soto Saben Cab. Berbah"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/berbah/area-makan.jpg",
+        "description": "Area makan luas dengan pemandangan sawah"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/berbah/playground.jpg",
+        "description": "Taman bermain anak di Soto Saben Berbah"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/berbah/live-music.jpg",
+        "description": "Panggung live music di Soto Saben Berbah"
+      }
+    ],
+    "branch_keputren": [
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/keputren/depan.jpg",
+        "description": "Tampak depan Soto Saben Cab. Keputren di Jl. Jejeran-Pleret"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/keputren/gerobak.jpg",
+        "description": "Gerobak kayu berkaca Soto Saben Keputren"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/keputren/etalase.jpg",
+        "description": "Etalase lauk dan gorengan"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/keputren/area-makan.jpg",
+        "description": "Ruang makan berdinding hijau dengan bangku kayu"
+      }
+    ],
+    "branch_trayeman": [
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/trayeman/depan.jpg",
+        "description": "Tampak depan Soto Saben Cab. Trayeman dari jalan raya"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/trayeman/ruang-dalam.jpg",
+        "description": "Ruang makan hijau dengan atap genteng dan bata ekspos"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/trayeman/teras.jpg",
+        "description": "Teras depan semi-terbuka Soto Saben Trayeman"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/trayeman/area-makan.jpg",
+        "description": "Meja dan bangku kayu di ruang makan Trayeman"
+      }
+    ],
+    "events_gallery": [
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/pesanan/hajatan.jpg",
+        "description": "Hajatan Malam di Halaman Rumah"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/pesanan/gedung.jpg",
+        "description": "Acara di Gedung & Kantor"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/pesanan/racik.jpg",
+        "description": "Diracik Langsung di Lokasi"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/pesanan/kantor.jpg",
+        "description": "Makan Siang Kantor"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/pesanan/malam-kampung.jpg",
+        "description": "Malam Tirakatan Kampung"
+      },
+      {
+        "url": "https://warung-soto-3.preview.emergentagent.com/images/pesanan/acara-kantor.jpg",
+        "description": "Prasmanan Soto Ratusan Porsi"
+      }
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Install and use `lenis` (@studio-freight/lenis or lenis package) for smooth scrolling on the main App layout.",
+    "Install and use `framer-motion` for kinetic typography reveals, parallax, and scroll-triggered animations.",
+    "Use react-router-dom to handle the three routes: `/`, `/galeri`, and `/pesan`.",
+    "Do NOT use transparent backgrounds for the sticky header; use backdrop-blur with a semi-opaque background.",
+    "Implement the specific menu structure and pricing exactly as requested in the problem statement.",
+    "WhatsApp links must be properly formatted (e.g., https://wa.me/6285103030305?text=...).",
+    "All copy MUST be in Indonesian as provided.",
+    "Include data-testid on interactive elements for automated testing."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": "Avoid generic 'AI slop' aesthetics. No generic centered layouts, no overused border-radii, no simplistic gradients. Create depth with asymmetrical layout and intentional empty space. Rely heavily on typography sizing and weights for hierarchy. Use crisp edges and layer shadows where necessary for UI components."
+}

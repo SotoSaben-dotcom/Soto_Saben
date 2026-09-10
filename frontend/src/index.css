@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 40 33% 96%;
+        --foreground: 27 14% 15%;
+        --card: 0 0% 100%;
+        --card-foreground: 27 14% 15%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 27 14% 15%;
+        --primary: 11 59% 49%;
+        --primary-foreground: 40 33% 96%;
+        --secondary: 40 20% 92%;
+        --secondary-foreground: 27 14% 15%;
+        --muted: 40 20% 92%;
+        --muted-foreground: 28 9% 33%;
+        --accent: 32 43% 44%;
+        --accent-foreground: 40 33% 96%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 40 20% 86%;
+        --input: 40 20% 86%;
+        --ring: 11 59% 49%;
+        --radius: 0.25rem;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+    html {
+        scroll-behavior: auto;
+    }
+    html.lenis, html.lenis body {
+        height: auto;
+    }
+    .lenis.lenis-smooth {
+        scroll-behavior: auto !important;
+    }
+    body {
+        @apply bg-bone text-ink font-sans antialiased;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    ::selection {
+        background: #C84B31;
+        color: #F9F6F0;
+    }
+    body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 80;
+        pointer-events: none;
+        opacity: 0.045;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E");
+    }
+}
+
+@layer base {
+    [data-debug-wrapper="true"] {
+        display: contents !important;
+    }
+
+    [data-debug-wrapper="true"] > * {
+        margin-left: inherit;
+        margin-right: inherit;
+        margin-top: inherit;
+        margin-bottom: inherit;
+        padding-left: inherit;
+        padding-right: inherit;
+        padding-top: inherit;
+        padding-bottom: inherit;
+        column-gap: inherit;
+        row-gap: inherit;
+        gap: inherit;
+        border-left-width: inherit;
+        border-right-width: inherit;
+        border-top-width: inherit;
+        border-bottom-width: inherit;
+        border-left-style: inherit;
+        border-right-style: inherit;
+        border-top-style: inherit;
+        border-bottom-style: inherit;
+        border-left-color: inherit;
+        border-right-color: inherit;
+        border-top-color: inherit;
+        border-bottom-color: inherit;
+    }
+}
