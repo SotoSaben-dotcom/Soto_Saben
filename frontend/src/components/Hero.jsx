@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
-import { ArrowUpRight, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { MaskedLines } from "./Reveal";
-import { WA_DEFAULT } from "../lib/site";
 
 export const Hero = () => {
   const ref = useRef(null);
@@ -118,16 +117,6 @@ export const Hero = () => {
               )}
             </AnimatePresence>
           </div>
-          <a
-            href={WA_DEFAULT}
-            target="_blank"
-            rel="noreferrer"
-            data-testid="hero-cta-whatsapp"
-            className="group inline-flex items-center gap-2 px-7 py-3.5 bg-sambal text-bone text-sm font-semibold hover:bg-ink transition-colors duration-300"
-          >
-            Pesan via WhatsApp
-            <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </a>
         </motion.div>
 
         <motion.p

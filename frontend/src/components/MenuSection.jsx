@@ -7,7 +7,7 @@ const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 export const MenuSection = () => (
   <section id="menu" data-testid="menu-section" className="py-20 sm:py-32 border-t border-line scroll-mt-20">
     <div className="mx-auto max-w-7xl px-5 sm:px-8">
-      <ChapterHeading number="02" title="Daftar Harga" />
+      <ChapterHeading number="02" title="Menu Utama dan Daftar Harga" />
 
       <div className="mt-10 sm:mt-16 grid lg:grid-cols-12 gap-10 lg:gap-8 items-end">
         <MaskedLines
@@ -108,7 +108,7 @@ export const MenuSection = () => (
             ))}
           </div>
           <p className="mt-6 text-sm text-kopi italic" data-testid="lauk-more-note">
-            …dan lauk atau jajanan lainnya — tanyakan saat memesan.
+            …dan lauk atau jajanan lainnya.
           </p>
         </div>
       </FadeUp>
