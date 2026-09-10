@@ -124,6 +124,12 @@ export const EVENT_PHOTOS = [
   { src: "/images/pesanan/acara-kantor.jpg", caption: "Prasmanan Soto Ratusan Porsi", kategori: "Acara" },
 ];
 
+export const TAMU_PHOTOS = [
+  { src: "/images/tamu/turis-1.jpg", caption: "Tamu dari Australia menikmati soto dan gorengan hangat" },
+  { src: "/images/tamu/turis-2.jpg", caption: "Foto bersama sebelum pulang — katanya bakal balik lagi" },
+  { src: "/images/tamu/turis-3.jpg", caption: "Mendoan hangat jadi favorit tamu mancanegara" },
+];
+
 export const GALLERY = [
   ...EVENT_PHOTOS,
   { src: "/images/soto-asli.jpg", caption: "Soto Pisah — bihun, suwiran ayam kampung, tomat, perkedel", kategori: "Hidangan" },
@@ -133,23 +139,27 @@ export const GALLERY = [
     b.photos.map((p) => ({ src: p.src, caption: p.alt, kategori: "Cabang" }))
   ),
   { src: "/images/warung-asli.jpg", caption: "Tampak depan Warung Soto Saben", kategori: "Cabang" },
+  ...TAMU_PHOTOS.map((p) => ({ ...p, kategori: "Cabang" })),
 ];
 
 export const TESTIMONIALS = [
   {
-    quote: "Kaldunya benar-benar beda — kuning, gurih, dan tidak bikin eneg. Anak saya sampai nambah dua kali.",
+    quote: "Kaldunya benar-benar beda — kuning, manis, gurih, asinnya pas, dan tidak bikin eneg. Anak saya sampai nambah dua kali.",
     name: "Bu Harti",
     context: "Arisan keluarga, Berbah",
+    stars: 5,
   },
   {
     quote: "Pesan 120 porsi untuk acara kantor, datang tepat waktu dan masih mengepul. Diracik langsung di lokasi, tamu-tamu pada kagum.",
     name: "Pak Bambang",
     context: "Makan siang kantor, Kota Yogyakarta",
+    stars: 5,
   },
   {
-    quote: "Sarapan soto di Keputren sambil lihat soto diracik dari gerobak kayunya itu pengalaman sendiri. Sederhana, tapi nagih.",
+    quote: "Sarapan soto di Cabang Pleret memang langganan saya setiap hari Sabtu — sangat nagih sekali.",
     name: "Mas Danu",
-    context: "Pelanggan rutin, Bantul",
+    context: "Pelanggan",
+    stars: 5,
   },
 ];
 
