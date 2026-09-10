@@ -82,9 +82,6 @@ export const MenuSection = () => (
             "Bihun, kol, suwiran ayam kampung, tomat, dan perkedel — siap disiram
             kuah kuning yang mengepul."
           </p>
-          <p className="mt-6 text-xs text-kopi tracking-wide" data-testid="menu-price-note">
-            * Harga dapat berubah — silakan konfirmasi saat memesan.
-          </p>
         </div>
       </FadeUp>
     </div>
