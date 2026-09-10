@@ -34,7 +34,7 @@ export const Navbar = () => {
     >
       <div className="mx-auto max-w-7xl px-5 sm:px-8 h-16 sm:h-20 flex items-center justify-between">
         <Link to="/" data-testid="nav-logo" aria-label="Warung Soto Saben — kembali ke beranda" className="inline-flex items-center">
-          <img src="/images/logo.png" alt="Logo Warung Soto Saben" className="h-11 sm:h-14 w-auto" />
+          <img src="/images/logo.png" alt="Logo Warung Soto Saben" className="h-12 sm:h-16 w-auto object-contain" />
         </Link>
 
         <nav className="hidden md:flex items-center gap-8" aria-label="Navigasi utama">

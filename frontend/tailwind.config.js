@@ -9,12 +9,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        bone: '#F9F6F0',
+        bone: '#F2ECDF',
         ink: '#2C2621',
         kopi: '#5C544D',
         sambal: '#C84B31',
         emas: '#A07340',
-        line: '#E5DFD3',
+        line: '#E0D7C6',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

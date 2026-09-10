@@ -18,11 +18,11 @@ export const Hero = () => {
           src="/images/warung-asli.jpg"
           alt=""
           style={{ y: imgY }}
-          className="absolute inset-0 h-[118%] w-full object-cover"
+          className="absolute inset-0 h-[112%] w-full object-cover object-[center_38%]"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-bone via-bone/85 to-bone/25" />
-        <div className="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-bone to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-bone/90 via-bone/55 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-bone/90 to-transparent" />
       </div>
 
       <motion.div
