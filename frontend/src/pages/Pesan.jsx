@@ -9,6 +9,10 @@ import { waLink, WA_DISPLAY, MENU, LAUK, EXTRA_DRINKS } from "../lib/site";
 
 const toNum = (p) => parseInt(p.replace(/[^0-9]/g, ""), 10);
 
+const SOTO_NAMES = ["Soto Ayam Kampung", "Soto Daging Sapi"];
+const ACARA_HIDE = ["Paha Bawah Ayam Kampung", "Paha Atas Ayam Kampung", "Kepala Ayam Kampung", "Ati Ampela Ayam Kampung"];
+const MINUMAN_NAMES = ["Teh / Jeruk Nipis", "Milo", "Good Day", "Kopi Susu", "Lemon Tea", "Kopi Hitam", "Coffee Mix", "Susu"];
+
 const GROUPS = [
   { label: "Soto — per porsi", options: MENU[0].items.map((i) => ({ value: i.name, harga: toNum(i.price) })) },
   {
@@ -41,14 +45,25 @@ export default function Pesan() {
   });
 
   useEffect(() => {
-    setForm((f) => ({
-      ...f,
-      lokasi: isAcara
-        ? f.lokasi.startsWith("Cabang Berbah")
-          ? ""
-          : f.lokasi
-        : "Cabang Berbah — Warung Soto Saben",
-    }));
+    setForm((f) => {
+      let menus = f.menus;
+      if (isAcara) {
+        menus = Object.fromEntries(
+          Object.entries(menus).filter(([n]) => !ACARA_HIDE.includes(n) && !MINUMAN_NAMES.includes(n))
+        );
+        const sotos = SOTO_NAMES.filter((s) => s in menus);
+        if (sotos.length > 1) sotos.slice(1).forEach((s) => delete menus[s]);
+      }
+      return {
+        ...f,
+        menus,
+        lokasi: isAcara
+          ? f.lokasi.startsWith("Cabang Berbah")
+            ? ""
+            : f.lokasi
+          : "Cabang Berbah — Warung Soto Saben",
+      };
+    });
   }, [isAcara]);
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
@@ -59,7 +74,10 @@ export default function Pesan() {
     setForm((f) => {
       const menus = { ...f.menus };
       if (v in menus) delete menus[v];
-      else menus[v] = 10;
+      else {
+        if (isAcara && SOTO_NAMES.includes(v)) SOTO_NAMES.forEach((s) => delete menus[s]);
+        menus[v] = 10;
+      }
       return { ...f, menus };
     });
 
@@ -74,6 +92,14 @@ export default function Pesan() {
     for (const g of GROUPS) for (const o of g.options) m[o.value] = o.harga;
     return m;
   }, []);
+
+  const groupsTampil = useMemo(() => {
+    if (!isAcara) return GROUPS;
+    return GROUPS.filter((g) => g.label !== "Minuman").map((g) => ({
+      ...g,
+      options: g.options.filter((o) => !ACARA_HIDE.includes(o.value)),
+    }));
+  }, [isAcara]);
 
   const totalQty = Object.values(form.menus).reduce((a, b) => a + b, 0);
 
@@ -157,7 +183,7 @@ export default function Pesan() {
           </FadeUp>
           <MaskedLines
             className="mt-4 font-serif font-medium tracking-tight leading-[1] text-5xl sm:text-7xl"
-            lines={["Biar Kami yang", <em key="b" className="text-sambal">Sibuk di Dapur.</em>]}
+            lines={["Tidak Usah Repot Cari", "Konsumsi Pas Acara —", <em key="b" className="text-sambal">Panggil Saja Kami.</em>]}
             delay={0.1}
           />
           <FadeUp delay={0.25}>
@@ -210,7 +236,7 @@ export default function Pesan() {
                     Pilihan Menu * <span className="normal-case tracking-normal text-kopi/70">— pilih menu, lalu isi porsi/pcs di sampingnya</span>
                   </p>
                   <div className="mt-4 space-y-5" data-testid="pesan-menu-picker">
-                    {GROUPS.map((g) => (
+                    {groupsTampil.map((g) => (
                       <div key={g.label}>
                         <p className="text-xs font-semibold text-emas tracking-widest uppercase mb-2.5">{g.label}</p>
                         <div className="flex flex-wrap gap-2">
@@ -248,6 +274,16 @@ export default function Pesan() {
                             );
                           })}
                         </div>
+                        {isAcara && g.label.startsWith("Soto") && (
+                          <p className="mt-2 text-xs text-sambal italic" data-testid="note-soto-no-mix">
+                            Soto tidak bisa di mix — pilih salah satu.
+                          </p>
+                        )}
+                        {isAcara && g.label === "Lauk & Jajanan" && (
+                          <p className="mt-2 text-xs text-kopi/80 italic" data-testid="note-gorengan">
+                            Aneka gorengan: mendoan, tempe garit, dan bakwan.
+                          </p>
+                        )}
                       </div>
                     ))}
                   </div>
