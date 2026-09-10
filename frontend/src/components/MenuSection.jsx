@@ -29,7 +29,7 @@ export const MenuSection = () => (
           <FadeUp key={group.category} delay={gi * 0.12} data-testid={`menu-group-${slug(group.category)}`}>
             <div>
               <h3 className="font-serif text-2xl sm:text-3xl font-semibold">{group.category}</h3>
-              <p className="mt-2 text-sm text-kopi leading-relaxed">{group.note}</p>
+              <p className="mt-2 text-sm text-kopi leading-relaxed min-h-[3rem]">{group.note}</p>
               <div className="mt-6 border-t border-ink/20">
                 {group.items.map((item) => (
                   <a
