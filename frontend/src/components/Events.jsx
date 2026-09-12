@@ -18,7 +18,7 @@ export const Events = () => (
         <FadeUp delay={0.2} className="lg:col-span-4 lg:col-start-9">
           <p className="text-sm text-kopi leading-relaxed">
             Dari halaman rumah sampai lobi gedung — minimal 50 porsi, kami
-            siapkan, antar, dan temani sampai tuntas.
+            siapkan, antar gratis (free delivery), dan temani sampai tuntas.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link

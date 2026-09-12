@@ -42,6 +42,7 @@ export default function Pesan() {
     menus: { "Soto Ayam Kampung": 0 },
     lokasi: "Cabang Berbah — Warung Soto Saben",
     catatan: "",
+    sound: false,
   });
 
   useEffect(() => {
@@ -164,6 +165,7 @@ export default function Pesan() {
           form.telepon.trim() ? `- No. HP saya: ${form.telepon.trim()}` : null,
           form.catatan.trim() ? `- Catatan: ${form.catatan.trim()}` : null,
           estimasi !== null ? `- Estimasi konsumsi di tempat: ${formatRp(estimasi)}` : null,
+          form.sound ? "- Sound system: perlu, tolong disiapkan" : null,
           "Mohon info ketersediaan, harga, dan sound system bila diperlukan. Terima kasih.",
         ]
     )
@@ -312,6 +314,20 @@ export default function Pesan() {
                   <label htmlFor="catatan" className="text-[0.65rem] tracking-[0.25em] uppercase text-kopi">Catatan (opsional)</label>
                   <textarea id="catatan" rows={3} data-testid="pesan-input-catatan" className={`${inputCls} resize-none`} placeholder={isAcara ? "cth. Acara mulai pukul 10.00, makan pukul 11.30 — gorengan mendoan & bakwan, sate ati & telur puyuh" : "cth. Arisan 25 orang, perlu sound system, acara mulai pukul 10.00"} value={form.catatan} onChange={set("catatan")} />
                 </div>
+                {!isAcara && (
+                  <div className="sm:col-span-2">
+                    <label className="inline-flex items-center gap-3 cursor-pointer select-none" data-testid="pesan-sound-wrapper">
+                      <input
+                        type="checkbox"
+                        data-testid="pesan-checkbox-sound"
+                        checked={form.sound}
+                        onChange={(e) => setForm((f) => ({ ...f, sound: e.target.checked }))}
+                        className="w-4 h-4 accent-[#C84B31] cursor-pointer"
+                      />
+                      <span className="text-sm">Butuh sound system untuk mendukung acara</span>
+                    </label>
+                  </div>
+                )}
                 <div className="sm:col-span-2">
                   <button
                     type="submit"

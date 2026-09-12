@@ -172,7 +172,7 @@ export const TESTIMONIALS = [
   {
     quote: "Pesan 120 porsi untuk acara kantor, datang tepat waktu dan masih mengepul. Diracik langsung di lokasi, tamu-tamu pada kagum.",
     name: "Pak Bambang",
-    context: "Makan siang kantor, Kota Yogyakarta",
+    context: "Pesanan acara kantor, Kota Yogyakarta",
     stars: 5,
   },
   {
