@@ -166,20 +166,20 @@ export const GALLERY = [
 
 export const TESTIMONIALS = [
   {
-    quote: "Kaldunya benar-benar beda — kuning, manis, gurih, asinnya pas, dan tidak bikin eneg. Anak saya sampai nambah dua kali.",
-    name: "Bu Harti",
-    context: "Arisan keluarga, Berbah",
+    quote: "Sotonya jenisnya manis. Kalau aku cocok. Memang tempat sarapan sejak bertahun-tahun lalu. Tehnya enak, wangi. Aneka pilihan gorengan dan sate-sateannya cukup bervariasi. Mendoannya juara sih, selalu jadi rebutan.",
+    name: "Andhisa Hapsari",
+    context: "Pelanggan",
     stars: 5,
   },
   {
     quote: "Pesan 120 porsi untuk acara kantor, datang tepat waktu dan masih mengepul. Diracik langsung di lokasi, tamu-tamu pada kagum.",
-    name: "Pak Bambang",
+    name: "Bambang",
     context: "Pesanan acara kantor, Kota Yogyakarta",
     stars: 5,
   },
   {
-    quote: "Sarapan soto di Cabang Pleret memang langganan saya setiap hari Sabtu — sangat nagih sekali.",
-    name: "Mas Danu",
+    quote: "Salah satu tempat sarapan paling recomended di Jl. Pleret.",
+    name: "Ahmad",
     context: "Pelanggan",
     stars: 5,
   },
