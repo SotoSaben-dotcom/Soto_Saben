@@ -152,7 +152,9 @@ export const TAMU_PHOTOS = [
 
 export const GALLERY = [
   ...EVENT_PHOTOS,
-  { src: "/images/soto-asli.jpg", caption: "Soto Pisah — bihun, suwiran ayam kampung, tomat, perkedel", kategori: "Hidangan" },
+  { src: "/images/pesanan/prasmanan-antre.jpg", caption: "Antrean prasmanan soto — tamu dilayani sampai tuntas", kategori: "Acara" },
+  { src: "/images/pesanan/prasmanan-ratusan.jpg", caption: "Ratusan porsi tertata rapi, siap disajikan", kategori: "Acara" },
+  { src: "/images/soto-asli.jpg", caption: "Soto Pisah — nasi yang lebih banyak dan lebih mengenyangkan", kategori: "Hidangan" },
   { src: "/images/soto-1.jpg", caption: "Soto daging sapi — potongan daging empuk, tomat, dan bawang goreng", kategori: "Hidangan" },
   { src: "/images/soto-2.jpg", caption: "Soto ayam kampung — kuah kuning keemasan dengan jeruk nipis", kategori: "Hidangan" },
   ...BRANCHES.flatMap((b) =>
