@@ -350,14 +350,14 @@ export default function Pesan() {
                     </div>
                     <p className="mt-1.5 text-[0.65rem] text-sambal italic" data-testid="summary-estimasi-note">
                       {isAcara
-                        ? "Belum termasuk ongkos antar & racik di lokasi."
+                        ? "Free delivery — gratis antar & racik di lokasi."
                         : "Sudah termasuk makan di tempat — joglo & fasilitas Cabang Berbah."}
                     </p>
                   </div>
                 </dl>
                 <p className="mt-6 text-xs text-kopi leading-relaxed">
                   {isAcara
-                    ? `Estimasi mengikuti harga satuan menu. Harga final beserta ongkos antar dikonfirmasi admin lewat WhatsApp ${WA_DISPLAY}.`
+                    ? `Estimasi mengikuti harga satuan menu. Free delivery — antar & racik di lokasi gratis. Harga final dikonfirmasi admin lewat WhatsApp ${WA_DISPLAY}.`
                     : `Estimasi mengikuti harga satuan menu. Harga final dan ketersediaan sound system dikonfirmasi admin lewat WhatsApp ${WA_DISPLAY}.`}
                 </p>
               </aside>
