@@ -151,6 +151,7 @@ export default function Pesan() {
           `- Lokasi acara: ${form.lokasi.trim()}`,
           form.telepon.trim() ? `- No. HP saya: ${form.telepon.trim()}` : null,
           form.catatan.trim() ? `- Catatan: ${form.catatan.trim()}` : null,
+          estimasi !== null ? `- Estimasi menu: ${formatRp(estimasi)} (belum termasuk antar & racik di lokasi)` : null,
           "Mohon info ketersediaan, harga, serta layanan antar dan racik di lokasi. Terima kasih.",
         ]
       : [
@@ -162,6 +163,7 @@ export default function Pesan() {
           `- Lokasi acara: ${form.lokasi.trim()}`,
           form.telepon.trim() ? `- No. HP saya: ${form.telepon.trim()}` : null,
           form.catatan.trim() ? `- Catatan: ${form.catatan.trim()}` : null,
+          estimasi !== null ? `- Estimasi konsumsi di tempat: ${formatRp(estimasi)}` : null,
           "Mohon info ketersediaan, harga, dan sound system bila diperlukan. Terima kasih.",
         ]
     )
@@ -339,11 +341,18 @@ export default function Pesan() {
                     <dt className="text-kopi">Total porsi/pcs</dt>
                     <dd className="font-medium" data-testid="summary-porsi">{totalQty}</dd>
                   </div>
-                  <div className="flex justify-between gap-4 pt-4 border-t border-line items-baseline">
-                    <dt className="text-kopi">Estimasi kasar</dt>
-                    <dd className="font-serif text-2xl font-semibold" data-testid="summary-estimasi">
-                      {estimasi !== null ? formatRp(estimasi) : "—"}
-                    </dd>
+                  <div className="pt-4 border-t border-line">
+                    <div className="flex justify-between gap-4 items-baseline">
+                      <dt className="text-kopi">{isAcara ? "Estimasi menu" : "Estimasi konsumsi"}</dt>
+                      <dd className="font-serif text-2xl font-semibold" data-testid="summary-estimasi">
+                        {estimasi !== null ? formatRp(estimasi) : "—"}
+                      </dd>
+                    </div>
+                    <p className="mt-1.5 text-[0.65rem] text-sambal italic" data-testid="summary-estimasi-note">
+                      {isAcara
+                        ? "Belum termasuk ongkos antar & racik di lokasi."
+                        : "Sudah termasuk makan di tempat — joglo & fasilitas Cabang Berbah."}
+                    </p>
                   </div>
                 </dl>
                 <p className="mt-6 text-xs text-kopi leading-relaxed">

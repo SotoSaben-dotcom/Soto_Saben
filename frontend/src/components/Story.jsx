@@ -60,7 +60,7 @@ export const Story = () => {
             <FadeUp delay={0.15} className="overflow-hidden border border-line mt-10 sm:mt-20">
               <motion.img
                 src="/images/soto-1.jpg"
-                alt="Semangkuk soto ayam kampung hangat"
+                alt="Semangkuk soto daging sapi dengan tomat dan bawang goreng"
                 style={{ y: y1 }}
                 className="w-full aspect-[3/4] object-cover scale-110 hover:scale-125 transition-transform duration-700"
                 loading="lazy"
@@ -69,7 +69,7 @@ export const Story = () => {
             <FadeUp delay={0.3} className="overflow-hidden border border-line">
               <img
                 src="/images/soto-2.jpg"
-                alt="Soto dengan kuah kuning keemasan"
+                alt="Soto ayam kampung dengan kuah kuning keemasan dan jeruk nipis"
                 className="w-full aspect-[3/4] object-cover hover:scale-105 transition-transform duration-700"
                 loading="lazy"
               />
