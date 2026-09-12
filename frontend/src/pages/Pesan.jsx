@@ -39,7 +39,7 @@ export default function Pesan() {
     nama: "",
     telepon: "",
     tanggal: "",
-    menus: { "Soto Ayam Kampung": 10 },
+    menus: { "Soto Ayam Kampung": 0 },
     lokasi: "Cabang Berbah — Warung Soto Saben",
     catatan: "",
   });
@@ -76,7 +76,7 @@ export default function Pesan() {
       if (v in menus) delete menus[v];
       else {
         if (isAcara && SOTO_NAMES.includes(v)) SOTO_NAMES.forEach((s) => delete menus[s]);
-        menus[v] = 10;
+        menus[v] = 0;
       }
       return { ...f, menus };
     });
@@ -84,7 +84,7 @@ export default function Pesan() {
   const setQty = (v, qty) =>
     setForm((f) => ({
       ...f,
-      menus: { ...f.menus, [v]: Math.max(1, parseInt(qty, 10) || 1) },
+      menus: { ...f.menus, [v]: Math.max(0, parseInt(qty, 10) || 0) },
     }));
 
   const priceMap = useMemo(() => {
@@ -262,7 +262,7 @@ export default function Pesan() {
                                 {active && (
                                   <input
                                     type="number"
-                                    min={1}
+                                    min={0}
                                     step={1}
                                     data-testid={`menu-qty-${slug(o.value)}`}
                                     value={form.menus[o.value]}
